@@ -1,0 +1,22 @@
+{
+  "name": "shalam",
+  "version": "0.1.0",
+  "description": "A tool for friendly CSS spriting",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitenterprise.inside-box.net:mbasta/shalam.git"
+  },
+  "keywords": [
+    "css",
+    "spriting",
+    "retina"
+  ],
+  "author": "Matt Basta <mattbasta@gmail.com>",
+  "license": "Apache",
+  "dependencies": {
+    "crass": "^0.7.0"
+  }
+}
