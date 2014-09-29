@@ -18,7 +18,6 @@
   "license": "Apache",
   "dependencies": {
     "canvas": "^1.1.6",
-    "crass": "^0.7.0",
-    "node-sprite-generator": "^0.7.0"
+    "crass": "^0.7.0"
   }
 }

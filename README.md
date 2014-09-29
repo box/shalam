@@ -102,6 +102,7 @@ will yield
     sprite: "image.png";
     /* shalam! */
     background-image: url(../img/sprites/main.png);
+    background-position: 0 0;
     /* end shalam */
 }
 ```
