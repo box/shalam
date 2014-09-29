@@ -17,6 +17,8 @@
   "author": "Matt Basta <mattbasta@gmail.com>",
   "license": "Apache",
   "dependencies": {
-    "crass": "^0.7.0"
+    "canvas": "^1.1.6",
+    "crass": "^0.7.0",
+    "node-sprite-generator": "^0.7.0"
   }
 }

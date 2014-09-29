@@ -5,10 +5,29 @@ A friendly tool for CSS spriting
 
 ## Installation
 
+First, you'll need to make sure that your system is ready. If you're running
+OS X, you'll need Cairo installed. Cairo depends on XQuartz. You'll want to
+download and install XQuartz from here:
+
+https://xquartz.macosforge.org/landing/
+
+Then install Cairo with [Homebrew](http://brew.sh):
+
+```bash
+brew install cairo
+```
+
 ```bash
 git clone https://gitenterprise.inside-box.net/mbasta/shalam.git
 cd shalam
 npm install
+```
+
+If you get an error about `xcb-shm`, try running the following before running
+`npm install`:
+
+```bash
+export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig
 ```
 
 
@@ -33,7 +52,7 @@ When shalam is run, you'll get this code:
     font-size: 1.5em;
     font-weight: bold;
 
-    sprite: "files-page/chevron.png" dest-size(32px 32px) source-size(64px 64px);
+    sprite: "files-page/chevron.png" dest-size(32px 32px);
     /* shalam! */
     background-image: url(../img/sprites/files-page.png);
     background-size: 32px 32px;
