@@ -11,10 +11,10 @@ download and install XQuartz from here:
 
 https://xquartz.macosforge.org/landing/
 
-Then install Cairo with [Homebrew](http://brew.sh):
+Then install Cairo and pkgconfig with [Homebrew](http://brew.sh):
 
 ```bash
-brew install cairo
+brew install cairo pkgconfig
 ```
 
 ```bash
