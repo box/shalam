@@ -41,7 +41,7 @@ Simply use the `sprite` declaration in your CSS files:
     font-size: 1.5em;
     font-weight: bold;
 
-    sprite: "files-page/chevron";
+    sprite: "files-page/chevron.png";
 }
 ```
 
@@ -55,8 +55,8 @@ When shalam is run, you'll get this code:
     sprite: "files-page/chevron.png" dest-size(32px 32px);
     /* shalam! */
     background-image: url(../img/sprites/files-page.png);
-    background-size: 32px 32px;
-    background-position: -128px -24px;
+    background-size: 125px 32px;
+    background-position: -50px -24px;
     /* end shalam */
 }
 ```
@@ -106,3 +106,13 @@ will yield
     /* end shalam */
 }
 ```
+
+
+## Future Work
+
+The following are planned features:
+
+- Automatically scaling assets to have a maximum resolution (a maximum
+  resolution of 2x, for instance).
+- Image paths are currently opaque string identifiers. In the future, these
+  will be replaced by `url()`s.
