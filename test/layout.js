@@ -8,10 +8,13 @@ describe('Layout', function() {
 
     function fakeImage(width, height, id) {
         return {
-            height: height,
-            width: width,
             id: id,
-            relPath: id,
+            path: id,
+            usedSizes: [
+                {width: width, height: height},
+            ],
+            maxSize: {width: width, height: height},
+            minSpritedSize: {width: width, height: height},
         };
     }
 
@@ -28,23 +31,23 @@ describe('Layout', function() {
 
             var computedLayout = layout.performLayout(images);
             assert.deepEqual(
-                computedLayout.images.map(function(img) {return img.id;}),
+                computedLayout.images.map(function(img) {return img.image.id;}),
                 ['second', 'third', 'first']
             );
 
         });
 
-        it('should make the layout a minumum of 250px wide', function() {
+        it('should make the layout a minumum of 256px wide', function() {
             var images = [
                 fakeImage(10, 10, 'first'),
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.width, 250);
+            assert.equal(computedLayout.width, 256);
 
         });
 
-        it('should make the layout width equal to the widest element if it exceeds 250px', function() {
+        it('should make the layout width equal to the widest element if it exceeds 256px', function() {
             var images = [
                 fakeImage(300, 10, 'first'),
                 fakeImage(260, 200, 'second'),
@@ -117,7 +120,7 @@ describe('Layout', function() {
 
     });
 
-    describe('createSpriteLayout()', function() {
+    describe('getImageDirectory()', function() {
 
         var layout;
         var sandbox;
@@ -187,7 +190,7 @@ describe('Layout', function() {
                 {id: 'aimage4', relPath: 'image4'},
             ]);
 
-            layout.createSpriteLayout(procs, 'source');
+            layout.getImageDirectory(procs, 'source');
 
         });
 
@@ -211,7 +214,7 @@ describe('Layout', function() {
                 {id: 'aimage2', relPath: 'image2'},
             ]);
 
-            layout.createSpriteLayout(procs, 'source');
+            layout.getImageDirectory(procs, 'source');
 
         });
 

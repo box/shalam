@@ -37,7 +37,6 @@ Simply use the `sprite` declaration in your CSS files:
 
 ```css
 .my-great-class {
-    background-size: 32px 32px;
     font-size: 1.5em;
     font-weight: bold;
 
@@ -54,9 +53,9 @@ When shalam is run, you'll get this code:
 
     sprite: "files-page/chevron.png" dest-size(32px 32px);
     /* shalam! */
-    background-image: url(../img/sprites/files-page.png);
-    background-size: 125px 32px;
-    background-position: -50px -24px;
+    ;
+    background: url(../img/sprites/files-page.png) -20px -74px;
+    background: url(../img/sprites/files-page.png) -50px -24px / 125px 32px;
     /* end shalam */
 }
 ```
@@ -75,7 +74,7 @@ shalam /path/to/css/directory /path/to/sprite/images /path/to/image/destination
 So for instance, you might run:
 
 ```
-shalam static/css static/img static/img/sprites
+shalam static/css static/img static/img/sprite
 ```
 
 The URL paths to the sprited images that will be inserted into the CSS will be
@@ -91,7 +90,7 @@ relative to their paths on the disk. In the above example, the following code:
 run with the following command:
 
 ```bash
-shalam static/css static/img static/img/sprites
+shalam static/css static/img static/img/sprite
 ```
 
 will yield
@@ -101,8 +100,7 @@ will yield
 .foo {
     sprite: "image.png";
     /* shalam! */
-    background-image: url(../img/sprites/main.png);
-    background-position: 0 0;
+    background: url(../img/sprite.png) 0 0;
     /* end shalam */
 }
 ```
@@ -112,7 +110,5 @@ will yield
 
 The following are planned features:
 
-- Automatically scaling assets to have a maximum resolution (a maximum
-  resolution of 2x, for instance).
 - Image paths are currently opaque string identifiers. In the future, these
   will be replaced by `url()`s.

@@ -32,13 +32,25 @@ describe('Compositor', function() {
     describe('composite()', function() {
 
         it('should composite to a new canvas with the given data', function() {
+
+            var baseImage = {
+                width: 123,
+                height: 456,
+            };
+
             mockery.registerMock('canvas', function(width, height) {
                 assert.equal(width, 123);
                 assert.equal(height, 456);
 
                 return {
                     getContext: sandbox.mock().once().withArgs('2d').returns({
-                        drawImage: sandbox.mock().withArgs('image', 12, 34),
+                        drawImage: sandbox.mock().withArgs(
+                            baseImage,
+                            0, 0,
+                            123, 456,
+                            12, 34,
+                            120, 340
+                        ),
                     }),
                     pngStream: sandbox.mock().once().returns({
                         on: sandbox.mock().twice()
@@ -58,10 +70,11 @@ describe('Compositor', function() {
                     width: 123,
                     height: 456,
                     images: [{
-                        image: 'image',
+                        image: baseImage,
                         x: 12,
-                        y: 34
-
+                        y: 34,
+                        width: 120,
+                        height: 340,
                     }]
                 },
                 'destination',

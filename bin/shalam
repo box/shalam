@@ -1,3 +1,9 @@
 #!/usr/bin/env node
 
+if (!process.argv[2] || !process.argv[3] || !process.argv[4]) {
+    console.log('Shalam Usage:');
+    console.log('  shalam path/to/css path/to/image/assets destination/path/for/sprite.png');
+    process.exit(1);
+}
+
 require('../lib/main').run(process.argv[2], process.argv[3], process.argv[4]);
