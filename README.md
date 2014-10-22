@@ -17,6 +17,12 @@ Then install Cairo and pkgconfig with [Homebrew](http://brew.sh):
 brew install cairo pkgconfig
 ```
 
+If you'd like to use Shalam on your devvm, install Cairo and its dependencies through yum:
+
+```bash
+yum install cairo cairo-devel cairomm-devel libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel giflib-devel
+```
+
 ```bash
 git clone https://gitenterprise.inside-box.net/mbasta/shalam.git
 cd shalam
