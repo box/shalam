@@ -5,6 +5,8 @@ A friendly tool for CSS spriting
 
 ## Installation
 
+### Mac OS X
+
 First, you'll need to make sure that your system is ready. If you're running
 OS X, you'll need Cairo installed. Cairo depends on XQuartz. You'll want to
 download and install XQuartz from here:
@@ -17,11 +19,15 @@ Then install Cairo and pkgconfig with [Homebrew](http://brew.sh):
 brew install cairo pkgconfig
 ```
 
+### Linux
+
 If you'd like to use Shalam on your devvm, install Cairo and its dependencies through yum:
 
 ```bash
 yum install cairo cairo-devel cairomm-devel libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel giflib-devel
 ```
+
+### Installation
 
 ```bash
 git clone https://gitenterprise.inside-box.net/mbasta/shalam.git
