@@ -70,7 +70,7 @@ describe('Compositor', function() {
                     width: 123,
                     height: 456,
                     images: [{
-                        image: baseImage,
+                        imageResource: baseImage,
                         x: 12,
                         y: 34,
                         width: 120,

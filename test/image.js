@@ -55,10 +55,8 @@ describe('Image', function() {
 
             assert.equal(mockImg.src, 'read');
 
-            assert.equal(output.image, mockImg);
             assert.equal(output.height, 123);
             assert.equal(output.width, 456);
-            assert.equal(output.path, 'resolved');
         });
 
     });

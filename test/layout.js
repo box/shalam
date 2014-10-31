@@ -8,7 +8,7 @@ describe('Layout', function() {
 
     function fakeImage(width, height, id) {
         return {
-            id: id,
+            imageResource: {id: id},
             path: id,
             usedSizes: [
                 {width: width, height: height},
@@ -31,7 +31,9 @@ describe('Layout', function() {
 
             var computedLayout = layout.performLayout(images);
             assert.deepEqual(
-                computedLayout.images.map(function(img) {return img.image.id;}),
+                computedLayout.images.map(function(img) {
+                    return img.imageResource.id;
+                }),
                 ['second', 'third', 'first']
             );
 
@@ -67,9 +69,9 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(images[0], computedLayout.mapping.first);
-            assert.equal(images[1], computedLayout.mapping.second);
-            assert.equal(images[2], computedLayout.mapping.third);
+            assert.equal(images[0].imageResource, computedLayout.mapping.first.imageResource);
+            assert.equal(images[1].imageResource, computedLayout.mapping.second.imageResource);
+            assert.equal(images[2].imageResource, computedLayout.mapping.third.imageResource);
 
         });
 
@@ -117,6 +119,86 @@ describe('Layout', function() {
 
         });
 
+        it('should not cascade decimal sizes to subsequent images', function() {
+            var images = [
+                {
+                    imageResource: {id: 'weirdSize'},
+                    path: 'weird/size',
+                    usedSizes: [
+                        {width: 15, height: 15},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 12.345, height: 12.345},
+                },
+                {
+                    imageResource: {id: 'normalSize'},
+                    path: 'normal/size',
+                    usedSizes: [
+                        {width: 15, height: 15},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 15, height: 15},
+                },
+            ];
+
+            var computedLayout = layout.performLayout(images);
+            assert.equal(computedLayout.images[1].x, 13);
+
+        });
+
+        it('should not cascade decimal sizes to subsequent images on the x-axis', function() {
+            var images = [
+                {
+                    imageResource: {id: 'weirdSize'},
+                    path: 'weird/size',
+                    usedSizes: [
+                        {width: 15, height: 15},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 12.345, height: 12.345},
+                },
+                {
+                    imageResource: {id: 'normalSize'},
+                    path: 'normal/size',
+                    usedSizes: [
+                        {width: 15, height: 15},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 15, height: 15},
+                },
+            ];
+
+            var computedLayout = layout.performLayout(images);
+            assert.equal(computedLayout.images[1].x, 13);
+
+        });
+
+        it('should not cascade decimal sizes to subsequent images on the y-axis', function() {
+            var images = [
+                {
+                    imageResource: {id: 'weirdSize'},
+                    path: 'weird/size',
+                    usedSizes: [
+                        {width: 1500, height: 15},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 1200, height: 12.345},
+                },
+                {
+                    imageResource: {id: 'normalSize'},
+                    path: 'normal/size',
+                    usedSizes: [
+                        {width: 15, height: 15},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 15, height: 15},
+                },
+            ];
+
+            var computedLayout = layout.performLayout(images);
+            assert.equal(computedLayout.images[1].y, 13);
+
+        });
 
     });
 
@@ -134,7 +216,15 @@ describe('Layout', function() {
 
         function fakeProcessor(images) {
             return {
-                foundSprites: images
+                foundSprites: images,
+                rulesets: images.map(function(img) {
+                    return {
+                        spriteData: {
+                            destHeight: 0,
+                            destWidth: 0,
+                        }
+                    };
+                }),
             };
         }
 
@@ -183,14 +273,10 @@ describe('Layout', function() {
             imgMock.expects('fetch').withArgs('rimage3').once().returns({id: 'aimage3'});
             imgMock.expects('fetch').withArgs('rimage4').once().returns({id: 'aimage4'});
 
-            sandbox.mock(layout).expects('performLayout').withArgs([
-                {id: 'aimage1', relPath: 'image1'},
-                {id: 'aimage2', relPath: 'image2'},
-                {id: 'aimage3', relPath: 'image3'},
-                {id: 'aimage4', relPath: 'image4'},
-            ]);
-
-            layout.getImageDirectory(procs, 'source');
+            var results = layout.getImageDirectory(procs, 'source');
+            assert.deepEqual(results.map(function(res) {
+                return res.imageResource.id;
+            }), ['aimage1', 'aimage2', 'aimage3', 'aimage4']);
 
         });
 
@@ -209,12 +295,8 @@ describe('Layout', function() {
             imgMock.expects('fetch').withArgs('rimage1').once().returns({id: 'aimage1'});
             imgMock.expects('fetch').withArgs('rimage2').once().returns({id: 'aimage2'});
 
-            sandbox.mock(layout).expects('performLayout').withArgs([
-                {id: 'aimage1', relPath: 'image1'},
-                {id: 'aimage2', relPath: 'image2'},
-            ]);
-
-            layout.getImageDirectory(procs, 'source');
+            var results = layout.getImageDirectory(procs, 'source');
+            assert.equal(results.length, 2);
 
         });
 
