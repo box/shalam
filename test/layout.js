@@ -119,33 +119,6 @@ describe('Layout', function() {
 
         });
 
-        it('should not cascade decimal sizes to subsequent images', function() {
-            var images = [
-                {
-                    imageResource: {id: 'weirdSize'},
-                    path: 'weird/size',
-                    usedSizes: [
-                        {width: 15, height: 15},
-                    ],
-                    maxSize: {width: 15, height: 15},
-                    minSpritedSize: {width: 12.345, height: 12.345},
-                },
-                {
-                    imageResource: {id: 'normalSize'},
-                    path: 'normal/size',
-                    usedSizes: [
-                        {width: 15, height: 15},
-                    ],
-                    maxSize: {width: 15, height: 15},
-                    minSpritedSize: {width: 15, height: 15},
-                },
-            ];
-
-            var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.images[1].x, 13);
-
-        });
-
         it('should not cascade decimal sizes to subsequent images on the x-axis', function() {
             var images = [
                 {
@@ -197,6 +170,163 @@ describe('Layout', function() {
 
             var computedLayout = layout.performLayout(images);
             assert.equal(computedLayout.images[1].y, 13);
+
+        });
+
+    });
+
+    describe('performLayoutCompat()', function() {
+
+        var layout = require('../lib/layout');
+
+        it('should order the images from widest to narrowest', function() {
+            var images = [
+                fakeImage(120, 120, 'first'),
+                fakeImage(250, 100, 'second'),
+                fakeImage(200, 10, 'third'),
+            ];
+
+            var computedLayout = layout.performLayoutCompat(images);
+            assert.deepEqual(
+                computedLayout.images.map(function(img) {
+                    return img.imageResource.id;
+                }),
+                ['second', 'third', 'first']
+            );
+
+        });
+
+        it('should make the layout a minumum of 256px wide', function() {
+            var images = [
+                fakeImage(10, 10, 'first'),
+            ];
+
+            var computedLayout = layout.performLayoutCompat(images);
+            assert.equal(computedLayout.width, 256);
+
+        });
+
+        it('should make the layout width equal to the widest element if it exceeds 256px', function() {
+            var images = [
+                fakeImage(300, 10, 'first'),
+                fakeImage(260, 200, 'second'),
+                fakeImage(10, 10, 'third'),
+            ];
+
+            var computedLayout = layout.performLayoutCompat(images);
+            assert.equal(computedLayout.width, 300);
+
+        });
+
+        it('should generate a mapping', function() {
+            var images = [
+                fakeImage(300, 10, 'first'),
+                fakeImage(260, 200, 'second'),
+                fakeImage(10, 10, 'third'),
+            ];
+
+            var computedLayout = layout.performLayoutCompat(images);
+            assert.equal(images[0].imageResource, computedLayout.mapping.first.imageResource);
+            assert.equal(images[1].imageResource, computedLayout.mapping.second.imageResource);
+            assert.equal(images[2].imageResource, computedLayout.mapping.third.imageResource);
+
+        });
+
+        it('should properly calculate the height of the layout', function() {
+
+            // Since these images do not meet the minimum width, they should
+            // never stack. Thus, the height should be 10.
+            var images = [
+                fakeImage(10, 10, 'first'),
+                fakeImage(10, 10, 'second'),
+                fakeImage(10, 10, 'third'),
+            ];
+
+            var computedLayout = layout.performLayoutCompat(images);
+            assert.equal(computedLayout.height, 10);
+
+        });
+
+        it('should properly calculate the height of the layout if it wraps', function() {
+
+            // Since these images exceed the width of the widest element, so
+            // it should wrap at each line.
+            var images = [
+                fakeImage(300, 10, 'first'),
+                fakeImage(250, 10, 'second'),
+                fakeImage(200, 10, 'third'),
+            ];
+
+            var computedLayout = layout.performLayoutCompat(images);
+            assert.equal(computedLayout.width, 300);
+            assert.equal(computedLayout.height, 30);
+
+        });
+
+        it('should allow images to line up on a single line', function() {
+            var images = [
+                fakeImage(300, 10, 'first'),
+                fakeImage(250, 10, 'second'),
+                fakeImage(50, 10, 'third'),
+            ];
+
+            var computedLayout = layout.performLayoutCompat(images);
+            assert.equal(computedLayout.width, 300);
+            assert.equal(computedLayout.height, 20);
+
+        });
+
+        it('should not cascade decimal sizes to subsequent images on the x-axis', function() {
+            var images = [
+                {
+                    imageResource: {id: 'weirdSize'},
+                    path: 'weird/size',
+                    usedSizes: [
+                        {width: 15.5, height: 15},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 12.345, height: 12.345},
+                },
+                {
+                    imageResource: {id: 'normalSize'},
+                    path: 'normal/size',
+                    usedSizes: [
+                        {width: 15, height: 15},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 15, height: 15},
+                },
+            ];
+
+            var computedLayout = layout.performLayoutCompat(images);
+            assert.equal(computedLayout.images[1].x, 16);
+
+        });
+
+        it('should not cascade decimal sizes to subsequent images on the y-axis', function() {
+            var images = [
+                {
+                    imageResource: {id: 'weirdSize'},
+                    path: 'weird/size',
+                    usedSizes: [
+                        {width: 1500, height: 15.5},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 1200, height: 12.345},
+                },
+                {
+                    imageResource: {id: 'normalSize'},
+                    path: 'normal/size',
+                    usedSizes: [
+                        {width: 15, height: 15},
+                    ],
+                    maxSize: {width: 15, height: 15},
+                    minSpritedSize: {width: 15, height: 15},
+                },
+            ];
+
+            var computedLayout = layout.performLayoutCompat(images);
+            assert.equal(computedLayout.images[1].y, 16);
 
         });
 
