@@ -430,6 +430,40 @@ describe('Layout', function() {
 
         });
 
+        function testAtSize(sourceWidth, sourceHeight, destWidth, destHeight) {
+            var procs = [
+                {
+                    foundSprites: ['img/foo.png'],
+                    rulesets: [
+                        {spriteData: {destWidth: destWidth, destHeight: destHeight}},
+                    ],
+                },
+            ];
+
+            var pathMock = sandbox.mock(path);
+            pathMock.expects('resolve').withArgs('source', 'img/foo.png').once().returns('rimage1');
+
+            var imgMock = sandbox.mock(image);
+            imgMock.expects('fetch').withArgs('rimage1').once().returns({height: sourceHeight, width: sourceWidth});
+
+            return layout.getImageDirectory(procs, 'source');
+        }
+
+        it('should not produce warnings for proper usage', function() {
+            var result = testAtSize(40, 40, 20, 20);
+            assert.ok(!result[0].warnings.length, 'There should be no warnings');
+        });
+
+        it('should warn about images being used at a larger size than the source', function() {
+            var result = testAtSize(40, 40, 80, 80);
+            assert.equal(result[0].warnings.length, 1, 'There should be one warning');
+        });
+
+        it('should warn about images being used at an uneven dimension', function() {
+            var result = testAtSize(40, 40, 15, 15);
+            assert.equal(result[0].warnings.length, 1, 'There should be one warning');
+        });
+
     });
 
 });
