@@ -86,7 +86,7 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.height, 10);
+            assert.equal(computedLayout.height, 22);
 
         });
 
@@ -102,7 +102,7 @@ describe('Layout', function() {
 
             var computedLayout = layout.performLayout(images);
             assert.equal(computedLayout.width, 300);
-            assert.equal(computedLayout.height, 30);
+            assert.equal(computedLayout.height, 42);
 
         });
 
@@ -115,7 +115,7 @@ describe('Layout', function() {
 
             var computedLayout = layout.performLayout(images);
             assert.equal(computedLayout.width, 300);
-            assert.equal(computedLayout.height, 20);
+            assert.equal(computedLayout.height, 42);
 
         });
 
@@ -142,7 +142,7 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.images[1].x, 13);
+            assert.equal(computedLayout.images[1].x, 17);
 
         });
 
@@ -169,7 +169,7 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.images[1].y, 13);
+            assert.equal(computedLayout.images[1].y, 17);
 
         });
 
