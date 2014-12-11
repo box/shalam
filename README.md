@@ -53,7 +53,7 @@ Simply use the `-shalam-sprite` declaration in your CSS files:
     font-size: 1.5em;
     font-weight: bold;
 
-    sprite: "files-page/chevron.png" dest-size(32px 32px);
+    -shalam-sprite: "files-page/chevron.png" dest-size(32px 32px);
 }
 ```
 
@@ -64,7 +64,7 @@ When shalam is run, you'll get this code:
     font-size: 1.5em;
     font-weight: bold;
 
-    sprite: "files-page/chevron.png" dest-size(32px 32px);
+    -shalam-sprite: "files-page/chevron.png" dest-size(32px 32px);
     /* shalam! */
     ;
     background: url(../img/sprites/files-page.png) -20px -74px;
@@ -73,9 +73,7 @@ When shalam is run, you'll get this code:
 }
 ```
 
-The `background-size` and `background-position` declarations are generated for
-you! This means that generating sprites with retina assets (even if your assets
-are not all retina) is a breeze.
+The `background` declarations with all the fixins are generated for you! This means that generating sprites with retina assets (even if your assets are not all retina) is a breeze.
 
 
 ## Running
@@ -96,7 +94,7 @@ relative to their paths on the disk. In the above example, the following code:
 ```css
 /* ~/myapp/static/css/main.css */
 .foo {
-    sprite: "image.png";
+    -shalam-sprite: "image.png";
 }
 ```
 
@@ -111,7 +109,7 @@ will yield
 ```css
 /* ~/myapp/static/css/main.css */
 .foo {
-    sprite: "image.png";
+    -shalam-sprite: "image.png";
     /* shalam! */
     background: url(../img/sprite.png) 0 0;
     /* end shalam */

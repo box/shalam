@@ -39,6 +39,7 @@ function processJSONRules(rules, dirname) {
         var spritePath = path.resolve(dirname, instruction.sprite);
         main.run(cssPath, imgPath, spritePath);
     });
+    console.log(rules.length + ' instructions successfully processed');
 }
 
 
