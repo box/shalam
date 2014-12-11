@@ -1,11 +1,44 @@
 #!/usr/bin/env node
 
+var fs = require('fs');
+var path = require('path');
+
 var argv = require('minimist')(process.argv.slice(2));
+
+var main = require('../lib/main');
 
 
 function help() {
     console.log('Shalam Usage:');
     console.log('    shalam path/to/css path/to/images destination/path/for/sprite.png');
+}
+
+function runPackageJSON(packageJSONPath) {
+    console.log('Found package.json: ' + packageJSONPath);
+    var contents = fs.readFileSync(packageJSONPath).toString();
+    var contentsParsed = JSON.parse(contents);
+
+    if (!('shalam' in contentsParsed) || !contentsParsed.shalam.length) {
+        console.warn('No shalam instructions found in package.json!');
+        return;
+    }
+
+    processJSONRules(contentsParsed.shalam, path.dirname(packageJSONPath));
+}
+
+function runShalamJSON(shalamJSONPath) {
+    console.log('Found shalam.json: ' + shalamJSONPath);
+    var contents = fs.readFileSync(shalamJSONPath).toString();
+    processJSONRules(JSON.parse(contents), path.dirname(shalamJSONPath));
+}
+
+function processJSONRules(rules, dirname) {
+    rules.forEach(function(instruction) {
+        var cssPath = path.resolve(dirname, instruction.css);
+        var imgPath = path.resolve(dirname, instruction.img);
+        var spritePath = path.resolve(dirname, instruction.sprite);
+        main.run(cssPath, imgPath, spritePath);
+    });
 }
 
 
@@ -15,8 +48,28 @@ if ('help' in argv) {
 }
 
 if ('package' in argv) {
-    console.log('Package support is not yet implemented.')
-    process.exit(0);
+    var basePath = process.cwd();
+    var packagePath;
+    while (basePath !== '/') {
+        // package.json
+        packagePath = path.resolve(basePath, 'package.json');
+        if (fs.existsSync(packagePath)) {
+            runPackageJSON(packagePath);
+            process.exit(0);
+        }
+
+        // shalam.json
+        packagePath = path.resolve(basePath, 'shalam.json');
+        if (fs.existsSync(packagePath)) {
+            runShalamJSON(packagePath);
+            process.exit(0);
+        }
+
+        basePath = path.resolve(basePath, '../');
+    }
+
+    console.error('Could not find package.json');
+    process.exit(1);
 }
 
 if (argv._.length !== 3) {
@@ -24,4 +77,4 @@ if (argv._.length !== 3) {
     process.exit(0);
 }
 
-require('../lib/main').run(argv._[0], argv._[1], argv._[2]);
+main.run(argv._[0], argv._[1], argv._[2]);
