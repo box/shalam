@@ -17,25 +17,26 @@ Then install Cairo and pkgconfig with [Homebrew](http://brew.sh):
 
 ```bash
 brew install cairo pkgconfig
-```
-
-### Linux
-
-If you'd like to use Shalam on your devvm, install Cairo and its dependencies through yum:
-
-```bash
-yum install cairo cairo-devel cairomm-devel libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel giflib-devel
-```
-
-### Installation
-
-```bash
 git clone https://gitenterprise.inside-box.net/mbasta/shalam.git
 cd shalam
 npm install
 ```
 
-If you get an error about `xcb-shm`, try running the following before running
+### Linux
+
+If you'd like to use Shalam on a Linux server, you can run a similar set of commands:
+
+```bash
+yum install cairo cairo-devel cairomm-devel libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel giflib-devel
+
+git clone https://gitenterprise.inside-box.net/mbasta/shalam.git
+cd shalam
+npm install
+```
+
+### Troubleshooting
+
+If you get an error about `xcb-shm` on OS X, try running the following before running
 `npm install`:
 
 ```bash
@@ -45,14 +46,14 @@ export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig
 
 ## Adding Sprites
 
-Simply use the `sprite` declaration in your CSS files:
+Simply use the `-shalam-sprite` declaration in your CSS files:
 
 ```css
 .my-great-class {
     font-size: 1.5em;
     font-weight: bold;
 
-    sprite: "files-page/chevron.png";
+    sprite: "files-page/chevron.png" dest-size(32px 32px);
 }
 ```
 
@@ -116,11 +117,3 @@ will yield
     /* end shalam */
 }
 ```
-
-
-## Future Work
-
-The following are planned features:
-
-- Image paths are currently opaque string identifiers. In the future, these
-  will be replaced by `url()`s.
