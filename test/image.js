@@ -10,7 +10,7 @@ describe('Image', function() {
 
     before(function() {
         mockery.enable({
-            warnOnUnregistered: false
+            warnOnUnregistered: false,
         });
     });
 
@@ -37,15 +37,15 @@ describe('Image', function() {
                 width: 456
             };
             mockery.registerMock('canvas', {
-                Image: sandbox.mock().once().returns(mockImg)
+                Image: sandbox.mock().once().returns(mockImg),
             });
 
             mockery.registerMock('fs', {
-                readFileSync: sandbox.mock().once().withArgs('resolved').returns('read')
+                readFileSync: sandbox.mock().once().withArgs('resolved').returns('read'),
             });
 
             mockery.registerMock('path', {
-                resolve: sandbox.mock().once().withArgs(process.cwd(), 'path').returns('resolved')
+                resolve: sandbox.mock().once().withArgs(process.cwd(), 'path').returns('resolved'),
             });
 
 

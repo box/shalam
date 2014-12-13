@@ -1,7 +1,7 @@
 var assert = require('assert');
 
-// var mockery = require('mockery');
-// var sinon = require('sinon');
+var mockery = require('mockery');
+var sinon = require('sinon');
 
 
 describe('isGitURI()', function() {
@@ -27,6 +27,99 @@ describe('isGitURI()', function() {
         assert.ok(!gitLib.isGitURI('/tmp/foo/bar/temp.txt'));
         assert.ok(!gitLib.isGitURI('../path/to/file'));
         assert.ok(!gitLib.isGitURI('path/to/file'));
+    });
+
+});
+
+
+describe('cloneGitURI()', function() {
+    var gitLib;
+    var sandbox;
+
+    before(function() {
+        mockery.enable({
+            warnOnUnregistered: false,
+            useCleanCache: true,
+        });
+    });
+
+    beforeEach(function() {
+        sandbox = sinon.sandbox.create();
+
+        mockery.registerMock('fs', {
+            mkdirSync: sandbox.mock().once().withArgs('resolved path'),
+        });
+
+        mockery.registerMock('os', {
+            tmpdir: sandbox.mock().once().returns('/tmp'),
+        });
+
+        mockery.registerMock('path', {
+            resolve: sandbox.mock().once().withArgs('/tmp').returns('resolved path'),
+        });
+
+    });
+
+    afterEach(function() {
+        mockery.resetCache();
+
+        sandbox.verifyAndRestore();
+
+        mockery.deregisterAll();
+    });
+
+    after(function() {
+        mockery.disable();
+    });
+
+    it('should set up clone URLs properly', function() {
+        var cloneObj = {
+            on: function() {},
+        };
+
+        mockery.registerMock('gitteh', {
+            clone: sandbox.mock().once().withArgs('git uri', 'resolved path').returns(cloneObj),
+        });
+
+
+        gitLib = require('../lib/git');
+        gitLib.cloneGitURI('git uri', function() {});
+    });
+
+    it('should call the completion callback appropriately', function() {
+        var registeredCallbacks = {};
+        var cloneObj = {
+            on: function(name, cb) {
+                registeredCallbacks[name] = cb;
+            },
+        };
+
+        mockery.registerMock('gitteh', {
+            clone: sandbox.mock().once().withArgs('git uri', 'resolved path').returns(cloneObj),
+        });
+
+        gitLib = require('../lib/git');
+        gitLib.cloneGitURI('git uri', sandbox.mock().once().withArgs(null, 'resolved path'));
+
+        registeredCallbacks.complete();
+    });
+
+    it('should fail on error', function() {
+        var registeredCallbacks = {};
+        var cloneObj = {
+            on: function(name, cb) {
+                registeredCallbacks[name] = cb;
+            },
+        };
+
+        mockery.registerMock('gitteh', {
+            clone: sandbox.mock().once().withArgs('git uri', 'resolved path').returns(cloneObj),
+        });
+
+        gitLib = require('../lib/git');
+        gitLib.cloneGitURI('git uri', sandbox.mock().once().withArgs('fail'));
+
+        registeredCallbacks.error('fail');
     });
 
 });

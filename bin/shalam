@@ -6,6 +6,7 @@ var path = require('path');
 var argv = require('minimist')(process.argv.slice(2));
 
 var main = require('../lib/main');
+var git = require('../lib/git');
 
 
 function help() {
@@ -34,10 +35,20 @@ function runShalamJSON(shalamJSONPath) {
 
 function processJSONRules(rules, dirname) {
     rules.forEach(function(instruction) {
-        var cssPath = path.resolve(dirname, instruction.css);
         var imgPath = path.resolve(dirname, instruction.img);
         var spritePath = path.resolve(dirname, instruction.sprite);
-        main.run(cssPath, imgPath, spritePath);
+
+        if (git.isGitURI(instruction.css)) {
+            console.log('Cloning "' + instruction.css + '"...');
+            git.cloneGitURI(instruction.css, function(err, cssPath) {
+                setImmediate(main.run.bind(main), cssPath, imgPath, spritePath);
+            });
+            return;
+        }
+
+        var cssPath = path.resolve(dirname, instruction.css);
+
+        setImmediate(main.run.bind(main), cssPath, imgPath, spritePath);
     });
     console.log(rules.length + ' instructions successfully processed');
 }
