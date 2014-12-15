@@ -19,6 +19,7 @@ describe('isGitURI()', function() {
 
     it('should accept git protocol URIs', function() {
         assert.ok(gitLib.isGitURI('user@server:project.git'));
+        assert.ok(gitLib.isGitURI('git@github.com:mattbasta/test.git'));
     });
 
     it('should ignore non-git URIs', function() {
@@ -77,8 +78,8 @@ describe('cloneGitURI()', function() {
             on: function() {},
         };
 
-        mockery.registerMock('gitteh', {
-            clone: sandbox.mock().once().withArgs('git uri', 'resolved path').returns(cloneObj),
+        mockery.registerMock('child_process', {
+            spawn: sandbox.mock().once().withArgs('git', ['clone', 'git uri', 'resolved path']).returns(cloneObj),
         });
 
 
@@ -94,14 +95,14 @@ describe('cloneGitURI()', function() {
             },
         };
 
-        mockery.registerMock('gitteh', {
-            clone: sandbox.mock().once().withArgs('git uri', 'resolved path').returns(cloneObj),
+        mockery.registerMock('child_process', {
+            spawn: sandbox.mock().once().withArgs('git', ['clone', 'git uri', 'resolved path']).returns(cloneObj),
         });
 
         gitLib = require('../lib/git');
         gitLib.cloneGitURI('git uri', sandbox.mock().once().withArgs(null, 'resolved path'));
 
-        registeredCallbacks.complete();
+        registeredCallbacks.close(0);
     });
 
     it('should fail on error', function() {
@@ -112,14 +113,14 @@ describe('cloneGitURI()', function() {
             },
         };
 
-        mockery.registerMock('gitteh', {
-            clone: sandbox.mock().once().withArgs('git uri', 'resolved path').returns(cloneObj),
+        mockery.registerMock('child_process', {
+            spawn: sandbox.mock().once().withArgs('git', ['clone', 'git uri', 'resolved path']).returns(cloneObj),
         });
 
         gitLib = require('../lib/git');
-        gitLib.cloneGitURI('git uri', sandbox.mock().once().withArgs('fail'));
+        gitLib.cloneGitURI('git uri', sandbox.mock().once().withArgs('Git returned non-zero exit code'));
 
-        registeredCallbacks.error('fail');
+        registeredCallbacks.close(1);
     });
 
 });

@@ -35,19 +35,23 @@ function runShalamJSON(shalamJSONPath) {
 
 function processJSONRules(rules, dirname) {
     rules.forEach(function(instruction) {
-        var imgPath = path.resolve(dirname, instruction.img);
+        var cssPath = path.resolve(dirname, instruction.css);
         var spritePath = path.resolve(dirname, instruction.sprite);
 
-        if (git.isGitURI(instruction.css)) {
-            console.log('Cloning "' + instruction.css + '"...');
-            git.cloneGitURI(instruction.css, function(err, cssPath) {
+        if (git.isGitURI(instruction.img)) {
+            console.log('Cloning "' + instruction.img + '"...');
+            git.cloneGitURI(instruction.img, function(err, imgPath) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log('Succesfully cloned into ' + imgPath);
                 setImmediate(main.run.bind(main), cssPath, imgPath, spritePath);
             });
             return;
         }
 
-        var cssPath = path.resolve(dirname, instruction.css);
-
+        var imgPath = path.resolve(dirname, instruction.img);
         setImmediate(main.run.bind(main), cssPath, imgPath, spritePath);
     });
     console.log(rules.length + ' instructions successfully processed');
@@ -89,4 +93,18 @@ if (argv._.length !== 3) {
     process.exit(0);
 }
 
-main.run(argv._[0], argv._[1], argv._[2]);
+debugger;
+if (git.isGitURI(argv._[1])) {
+    console.log('Cloning "' + argv._[1] + '"...');
+    git.cloneGitURI(argv._[1], function(err, imgPath) {
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
+        console.log('Succesfully cloned into ' + imgPath);
+        main.run(argv._[0], imgPath, argv._[2]);
+    });
+} else {
+    main.run(argv._[0], argv._[1], argv._[2]);
+}
+
