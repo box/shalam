@@ -8,12 +8,20 @@ var argv = require('minimist')(process.argv.slice(2));
 var main = require('../lib/main');
 var git = require('../lib/git');
 
-
+/**
+ * Prints the CLI options.
+ * @returns {void}
+ */
 function help() {
     console.log('Shalam Usage:');
     console.log('    shalam path/to/css path/to/images destination/path/for/sprite.png');
 }
 
+/**
+ * Parses the instructions found within the provided package.json file.
+ * @param {string} packageJSONPath Path to the JSON file to parse.
+ * @returns {void}
+ */
 function runPackageJSON(packageJSONPath) {
     console.log('Found package.json: ' + packageJSONPath);
     var contents = fs.readFileSync(packageJSONPath).toString();
@@ -27,14 +35,25 @@ function runPackageJSON(packageJSONPath) {
     processJSONRules(contentsParsed.shalam, path.dirname(packageJSONPath));
 }
 
+/**
+ * Parses the instructions found within the provided shalam.json file.
+ * @param {string} shalamJSONPath Path to the JSON file to parse.
+ * @returns {void}
+ */
 function runShalamJSON(shalamJSONPath) {
     console.log('Found shalam.json: ' + shalamJSONPath);
     var contents = fs.readFileSync(shalamJSONPath).toString();
     processJSONRules(JSON.parse(contents), path.dirname(shalamJSONPath));
 }
 
-function processJSONRules(rules, dirname) {
-    rules.forEach(function(instruction) {
+/**
+ * Executes the passed instructions from a JSON file.
+ * @param {object[]} instructions Array of instructions to execute.
+ * @param {string} dirname Path that the operation should take place in.
+ * @returns {void}
+ */
+function processJSONRules(instructions, dirname) {
+    instructions.forEach(function(instruction) {
         var cssPath = path.resolve(dirname, instruction.css);
         var spritePath = path.resolve(dirname, instruction.sprite);
 
@@ -54,18 +73,21 @@ function processJSONRules(rules, dirname) {
         var imgPath = path.resolve(dirname, instruction.img);
         setImmediate(main.run.bind(main), cssPath, imgPath, spritePath);
     });
-    console.log(rules.length + ' instructions successfully processed');
+    console.log(instructions.length + ' instructions successfully processed');
 }
 
-
+// Test if the user typed `--help`
 if ('help' in argv) {
     help();
     process.exit(0);
 }
 
+// Handle `--package`
 if ('package' in argv) {
     var basePath = process.cwd();
     var packagePath;
+    // Iterate up each parent in the current path until a supported
+    // JSON file is found.
     while (basePath !== '/') {
         // package.json
         packagePath = path.resolve(basePath, 'package.json');
@@ -88,12 +110,15 @@ if ('package' in argv) {
     process.exit(1);
 }
 
+// If we've made it to this point, we're performing the normal
+// three-option operation.
 if (argv._.length !== 3) {
     help();
     process.exit(0);
 }
 
-debugger;
+// If the second parameter is a Git URI, clone it so we can run
+// against it.
 if (git.isGitURI(argv._[1])) {
     console.log('Cloning "' + argv._[1] + '"...');
     git.cloneGitURI(argv._[1], function(err, imgPath) {
