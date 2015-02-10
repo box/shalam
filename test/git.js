@@ -20,6 +20,7 @@ describe('isGitURI()', function() {
     it('should accept git protocol URIs', function() {
         assert.ok(gitLib.isGitURI('user@server:project.git'));
         assert.ok(gitLib.isGitURI('git@github.com:mattbasta/test.git'));
+        assert.ok(gitLib.isGitURI('git@github-other.com:mattbasta/test.git'));
     });
 
     it('should ignore non-git URIs', function() {
