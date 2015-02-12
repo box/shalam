@@ -82,8 +82,12 @@ if ('help' in argv) {
     process.exit(0);
 }
 
-// Handle `--package`
-if ('package' in argv) {
+/**
+ * Searches for an applicable JSON file and executes the instructions within
+ * it.
+ * @returns {void}
+ */
+function handlePackage() {
     var basePath = process.cwd();
     var packagePath;
     // Iterate up each parent in the current path until a supported
@@ -93,14 +97,14 @@ if ('package' in argv) {
         packagePath = path.resolve(basePath, 'package.json');
         if (fs.existsSync(packagePath)) {
             runPackageJSON(packagePath);
-            process.exit(0);
+            return;
         }
 
         // shalam.json
         packagePath = path.resolve(basePath, 'shalam.json');
         if (fs.existsSync(packagePath)) {
             runShalamJSON(packagePath);
-            process.exit(0);
+            return;
         }
 
         basePath = path.resolve(basePath, '../');
@@ -110,26 +114,33 @@ if ('package' in argv) {
     process.exit(1);
 }
 
-// If we've made it to this point, we're performing the normal
-// three-option operation.
-if (argv._.length !== 3) {
+
+if ('package' in argv) {
+    // Handle `--package`
+    handlePackage();
+
+} else if (argv._.length !== 3) {
+    // If we've made it to this point, we're performing the normal
+    // three-option operation.
     help();
-    process.exit(0);
-}
+    process.exit(1);
 
-// If the second parameter is a Git URI, clone it so we can run
-// against it.
-if (git.isGitURI(argv._[1])) {
-    console.log('Cloning "' + argv._[1] + '"...');
-    git.cloneGitURI(argv._[1], function(err, imgPath) {
-        if (err) {
-            console.error(err);
-            process.exit(1);
-        }
-        console.log('Succesfully cloned into ' + imgPath);
-        main.run(argv._[0], imgPath, argv._[2]);
-    });
 } else {
-    main.run(argv._[0], argv._[1], argv._[2]);
-}
 
+    if (git.isGitURI(argv._[1])) {
+        // If the second parameter is a Git URI, clone it so we can run
+        // against it.
+        console.log('Cloning "' + argv._[1] + '"...');
+        git.cloneGitURI(argv._[1], function(err, imgPath) {
+            if (err) {
+                console.error(err);
+                process.exit(1);
+            }
+            console.log('Succesfully cloned into ' + imgPath);
+            main.run(argv._[0], imgPath, argv._[2]);
+        });
+    } else {
+        main.run(argv._[0], argv._[1], argv._[2]);
+    }
+
+}
