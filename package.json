@@ -1,13 +1,13 @@
 {
   "name": "shalam",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A tool for friendly CSS spriting",
   "scripts": {
     "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git@gitenterprise.inside-box.net:mbasta/shalam.git"
+    "url": "git@gitenterprise.inside-box.net:Performance/shalam.git"
   },
   "keywords": [
     "css",
@@ -17,7 +17,7 @@
   "author": "Matt Basta <mattbasta@gmail.com>",
   "license": "Apache",
   "dependencies": {
-    "canvas": "^1.1.6",
+    "canvas": "1.1.6",
     "crass": "^0.7.0",
     "minimist": "^1.1.0"
   },
