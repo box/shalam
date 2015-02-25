@@ -2,6 +2,9 @@
   "name": "shalam",
   "version": "0.2.0",
   "description": "A tool for friendly CSS spriting",
+  "bin": {
+    "shalam": "./bin/shalam"
+  },
   "scripts": {
     "test": "mocha"
   },
