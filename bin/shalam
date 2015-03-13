@@ -20,9 +20,10 @@ function help() {
 /**
  * Parses the instructions found within the provided package.json file.
  * @param {string} packageJSONPath Path to the JSON file to parse.
+ * @param {string} instructionName Name of the instruction set to be run.
  * @returns {void}
  */
-function runPackageJSON(packageJSONPath) {
+function runPackageJSON(packageJSONPath, instructionName) {
     console.log('Found package.json: ' + packageJSONPath);
     var contents = fs.readFileSync(packageJSONPath).toString();
     var contentsParsed = JSON.parse(contents);
@@ -32,30 +33,35 @@ function runPackageJSON(packageJSONPath) {
         return;
     }
 
-    processJSONRules(contentsParsed.shalam, path.dirname(packageJSONPath));
+    processJSONRules(contentsParsed.shalam, path.dirname(packageJSONPath), instructionName);
 }
 
 /**
  * Parses the instructions found within the provided shalam.json file.
  * @param {string} shalamJSONPath Path to the JSON file to parse.
+ * @param {string} instructionName Name of the instruction set to be run.
  * @returns {void}
  */
-function runShalamJSON(shalamJSONPath) {
+function runShalamJSON(shalamJSONPath, instructionName) {
     console.log('Found shalam.json: ' + shalamJSONPath);
     var contents = fs.readFileSync(shalamJSONPath).toString();
-    processJSONRules(JSON.parse(contents), path.dirname(shalamJSONPath));
+    processJSONRules(JSON.parse(contents), path.dirname(shalamJSONPath), instructionName);
 }
 
 /**
  * Executes the passed instructions from a JSON file.
  * @param {object[]} instructions Array of instructions to execute.
  * @param {string} dirname Path that the operation should take place in.
+ * @param {string} instructionName Name of the instruction set to be run.
  * @returns {void}
  */
-function processJSONRules(instructions, dirname) {
+function processJSONRules(instructions, dirname, instructionName) {
+    var processedInstructionsCounter = 0;
     instructions.forEach(function(instruction) {
         var cssPath = path.resolve(dirname, instruction.css);
         var spritePath = path.resolve(dirname, instruction.sprite);
+
+        if (instructionName && instructionName !== instruction.name) return;
 
         if (git.isGitURI(instruction.img)) {
             console.log('Cloning "' + instruction.img + '"...');
@@ -67,13 +73,14 @@ function processJSONRules(instructions, dirname) {
                 console.log('Succesfully cloned into ' + imgPath);
                 setImmediate(main.run.bind(main), cssPath, imgPath, spritePath);
             });
+            processedInstructionsCounter++;
             return;
         }
 
         var imgPath = path.resolve(dirname, instruction.img);
         setImmediate(main.run.bind(main), cssPath, imgPath, spritePath);
     });
-    console.log(instructions.length + ' instructions successfully processed');
+    console.log(processedInstructionsCounter + ' instructions successfully processed');
 }
 
 // Test if the user typed `--help`
@@ -85,9 +92,10 @@ if ('help' in argv) {
 /**
  * Searches for an applicable JSON file and executes the instructions within
  * it.
+ * @param {string} instructionName Name of the instruction set to be run.
  * @returns {void}
  */
-function handlePackage() {
+function handlePackage(instructionName) {
     var basePath = process.cwd();
     var packagePath;
     // Iterate up each parent in the current path until a supported
@@ -96,14 +104,14 @@ function handlePackage() {
         // package.json
         packagePath = path.resolve(basePath, 'package.json');
         if (fs.existsSync(packagePath)) {
-            runPackageJSON(packagePath);
+            runPackageJSON(packagePath, instructionName);
             return;
         }
 
         // shalam.json
         packagePath = path.resolve(basePath, 'shalam.json');
         if (fs.existsSync(packagePath)) {
-            runShalamJSON(packagePath);
+            runShalamJSON(packagePath, instructionName);
             return;
         }
 
@@ -116,8 +124,9 @@ function handlePackage() {
 
 
 if ('package' in argv) {
-    // Handle `--package`
-    handlePackage();
+    // Handle `--package` with optional instruction name
+    var instructionName = argv.package.length > 0 ? argv.package : null;
+    handlePackage(instructionName);
 
 } else if (argv._.length !== 3) {
     // If we've made it to this point, we're performing the normal
