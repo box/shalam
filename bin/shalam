@@ -20,6 +20,7 @@ function help() {
 /**
  * Parses the instructions found within the provided package.json file.
  * @param {string} packageJSONPath Path to the JSON file to parse.
+ * @param {string} instructionName Name of the instruction set to be run.
  * @returns {void}
  */
 function runPackageJSON(packageJSONPath, instructionName) {
@@ -38,6 +39,7 @@ function runPackageJSON(packageJSONPath, instructionName) {
 /**
  * Parses the instructions found within the provided shalam.json file.
  * @param {string} shalamJSONPath Path to the JSON file to parse.
+ * @param {string} instructionName Name of the instruction set to be run.
  * @returns {void}
  */
 function runShalamJSON(shalamJSONPath, instructionName) {
@@ -50,6 +52,7 @@ function runShalamJSON(shalamJSONPath, instructionName) {
  * Executes the passed instructions from a JSON file.
  * @param {object[]} instructions Array of instructions to execute.
  * @param {string} dirname Path that the operation should take place in.
+ * @param {string} instructionName Name of the instruction set to be run.
  * @returns {void}
  */
 function processJSONRules(instructions, dirname, instructionName) {
@@ -89,6 +92,7 @@ if ('help' in argv) {
 /**
  * Searches for an applicable JSON file and executes the instructions within
  * it.
+ * @param {string} instructionName Name of the instruction set to be run.
  * @returns {void}
  */
 function handlePackage(instructionName) {
