@@ -71,7 +71,7 @@ When shalam is run, you'll get this code:
     -shalam-sprite: "files-page/chevron.png" dest-size(32px 32px);
     /* shalam! */;
     background: url(../img/sprites/files-page.png) -20px -74px;
-    background: url(../img/sprites/files-page.compat.png) -50px -24px / 125px 32px;
+    background: url(../img/sprites/files-page.compat.png) -50px -24px/125px 32px;
     /* end shalam */
 }
 ```
@@ -85,7 +85,11 @@ The `background` declarations with all the fixins are generated for you! This me
 shalam /path/to/source/css /path/to/source/images /path/to/final/output/image
 ```
 
-So for instance, you might run:
+- The first argument is the path to a directory containing the CSS files to process.
+- The second argument is the path to a directory containing the source images that will be used in the sprited image. This doesn't need to be a part of your application's main repository (since the source images will not be included in your assets). For example, you might keep your source images in `/Users/matt/projects/site-assets/`.
+- The third argument is the path to the location you expect the final sprited image to go. That is, if you expect to create `static/img/sprite.png`, you will specify `static/img/sprite`. The file extension is omitted intentionally to support a compatibility sprite (`static/img/sprite.compat.png`, for IE8 support).
+
+For example, you might run:
 
 ```
 shalam static/css static/img static/img/sprite
@@ -113,19 +117,22 @@ will yield
 /* ~/myapp/static/css/main.css */
 .foo {
     -shalam-sprite: "image.png";
-    /* shalam! */
+    /* shalam! */;
     background: url(../img/sprite.png) 0 0;
+    background: url(../img/sprite.compat.png) 0 0/40px 40px;
     /* end shalam */
 }
 ```
 
+Notice that the URLs used in the template are relative from the final path of the sprited image to the location of the CSS file. In `static/css/main.css`, `../img/sprite.png` would yield `static/img/sprite.png`, which is what we passed for the third argument.
 
-## Other Features
+
+## Advanced Features
 
 More advanced features are documented on the wiki:
 
-- [Support for pulling source images directly from Git](wiki/Git-Support)
-- [Ability to define sprite "packages" for easy sprite re-use](wiki/Package-Support)
+- [Support for pulling source images directly from Git](../../wiki/Git-Support)
+- [Ability to define sprite "packages" for easy sprite re-use](../../wiki/Package-Support)
 
 
 ## Support
