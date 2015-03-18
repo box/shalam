@@ -1,6 +1,6 @@
 {
   "name": "shalam",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A tool for friendly CSS spriting",
   "bin": {
     "shalam": "./bin/shalam"
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gitenterprise.inside-box.net:Performance/shalam.git"
+    "url": "git@github.com:box/shalam.git"
   },
   "keywords": [
     "css",
@@ -18,7 +18,7 @@
     "retina"
   ],
   "author": "Matt Basta <mattbasta@gmail.com>",
-  "license": "Apache",
+  "license": "Apache-2.0",
   "dependencies": {
     "canvas": "1.1.6",
     "crass": "^0.7.4",
