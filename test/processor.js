@@ -53,27 +53,6 @@ describe('Processor', function() {
 
         it('should find sprite declarations in a CSS file', function() {
             var proc = {
-                parsed: crass.parse('x y z{sprite: "foo/bar";}'),
-                foundSprites: [],
-                rulesets: [],
-            };
-
-            Processor.prototype.search.call(proc);
-
-            assert.deepEqual(proc.foundSprites, ['foo/bar']);
-            assert.equal(proc.rulesets.length, 1);
-            assert.ok(proc.rulesets[0].ruleset instanceof crass.objects.Ruleset);
-            assert.deepEqual(proc.rulesets[0].spriteData, {
-                path: 'foo/bar',
-                destWidth: -1,
-                destHeight: -1,
-                destX: null,
-                destY: null,
-            });
-        });
-
-        it('should find alternate sprite declarations in a CSS file', function() {
-            var proc = {
                 parsed: crass.parse('x y z{-shalam-sprite: "foo/bar";}'),
                 foundSprites: [],
                 rulesets: [],
