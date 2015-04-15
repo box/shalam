@@ -199,6 +199,13 @@ describe('newDimension()', function() {
         );
     });
 
+    it('should return a Crass Number object without units when the input is zero', function() {
+        assert.equal(
+            Processor.newDimension(0, 'px').toString(),
+            '0'
+        );
+    });
+
 });
 
 describe('newDeclaration()', function() {
