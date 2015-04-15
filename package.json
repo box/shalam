@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "canvas": "1.1.6",
-    "crass": "^0.7.4",
+    "crass": "^0.7.6",
     "minimist": "^1.1.0"
   },
   "devDependencies": {
