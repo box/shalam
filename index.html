@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shalam!</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <header id="top">
+    <div class="box-stalker">
+      <a href="http://opensource.box.com/" class="logo">Box</a>
+    </div>
+    <h1>Shalam!</h1>
+    <h2>A friendly tool for creating sprites</h2>
+    <p class="npm">
+      <samp>$</samp> <kbd>npm install -g <span class="npm-highlight">shalam</span></kbd>
+    </p>
+    <p class="need-help"><a href="https://github.com/box/shalam">Need help getting started?</a></p>
+  </header>
+
+  <div class="box-stalker">
+    <a href="http://opensource.box.com/" class="logo">Box</a>
+    <a href="#top" class="back-to-top">Back to Top</a>
+  </div>
+
+  <section>
+    <h1>Simplifying CSS Sprites</h1>
+    <p>
+      Shalam is a CSS processing tool that makes it incredibly easy to sprite the images in your web application. Unlike other CSS spriting tools, Shalam uses a special approach that is not only faster and simpler, but also supports high density displays and does a bettern-than-average job of minimizing wasted space inside the sprite.
+    </p>
+
+<div class="highlight highlight-css"><pre><span class="pl-e">.my-great-class</span> {
+    <span class="pl-c1"><span class="pl-c1">font-size</span></span>: <span class="pl-c1">1.5<span class="pl-k">em</span></span>;
+    <span class="pl-c1"><span class="pl-c1">font-weight</span></span>: <span class="pl-c1">bold</span>;
+
+    <span class="pl-c1">-shalam-sprite</span>: <span class="pl-s"><span class="pl-pds">"</span>files-page/chevron.png<span class="pl-pds">"</span></span> dest-size(<span class="pl-c1">32<span class="pl-k">px</span></span> <span class="pl-c1">32<span class="pl-k">px</span></span>);
+}</pre></div>
+
+    <p>&hellip;becomes&hellip;</p>
+
+<div class="highlight highlight-css"><pre><span class="pl-e">.my-great-class</span> {
+    <span class="pl-c1"><span class="pl-c1">font-size</span></span>: <span class="pl-c1">1.5<span class="pl-k">em</span></span>;
+    <span class="pl-c1"><span class="pl-c1">font-weight</span></span>: <span class="pl-c1">bold</span>;
+
+    <span class="pl-c1">-shalam-sprite</span>: <span class="pl-s"><span class="pl-pds">"</span>files-page/chevron.png<span class="pl-pds">"</span></span> dest-size(<span class="pl-c1">32<span class="pl-k">px</span></span> <span class="pl-c1">32<span class="pl-k">px</span></span>);
+    <span class="pl-c">/* shalam! */</span>;
+    <span class="pl-c1"><span class="pl-c1">background</span></span>: <span class="pl-c1">url</span>(<span class="pl-v">../img/sprites/main-sprite.png</span>) <span class="pl-c1">-20<span class="pl-k">px</span></span> <span class="pl-c1">-74<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">background</span></span>: <span class="pl-c1">url</span>(<span class="pl-v">../img/sprites/main-sprite.compat.png</span>) <span class="pl-c1">-50<span class="pl-k">px</span></span> <span class="pl-c1">-24<span class="pl-k">px</span></span>/<span class="pl-c1">125<span class="pl-k">px</span></span> <span class="pl-c1">32<span class="pl-k">px</span></span>;
+    <span class="pl-c">/* end shalam */</span>
+}</pre></div>
+
+  </section>
+
+  <section>
+    <h1>Features</h1>
+
+    <dl>
+      <dt>Basic Layout Engine</dt>
+      <dd>Unlike other CSS spriting tools, Shalam uses a simple layout engine to help minimize the dimensions of the generated sprite. This helps to decrease overall file size.</dd>
+
+      <dt>Retina Friendly</dt>
+      <dd>Shalam allows developers to specify the destination size of images on the page. That means that you can support high-density screens without needing to manually fiddle with sprite sheets.</dd>
+
+      <dt>Automatic Downsampling</dt>
+      <dd>Let's say you have an image that's 512 by 512 pixels, and you use it at 128 by 128 pixels. Shalam will automatically downsample the source image to 256 by 256 pixels (2x) in the generated sprite. This ensures no bytes are wasted.</dd>
+
+      <dt>Pull directly from Git</dt>
+      <dd>Shalam can be configured to pull your image assets directly from a Git repository. Your design team can use their own design processes and hand off high-resolution assets directly to developers. And with automatic downsampling, designers don't need to worry about what size to store the images at. No more ZIP files full of resized images being emailed back and forth!</dd>
+
+      <dt>Support for IE8</dt>
+      <dd>Nobody likes supporting old browsers. Shalam has built-in support for generating IE8-friendly sprites. No extra effort required.</dd>
+
+    </dl>
+
+  </section>
+
+
+
+</body>
+</html>
