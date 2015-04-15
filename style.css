@@ -4,7 +4,6 @@
   font-style: normal;
   font-weight: 400;
   src: local('Lato Regular'), local('Lato-Regular'), url(http://fonts.gstatic.com/s/lato/v11/1YwB1sO8YE1Lyjf12WNiUA.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
 /* latin */
@@ -13,7 +12,6 @@
   font-style: normal;
   font-weight: 400;
   src: local('Lobster'), local('Lobster-Regular'), url(http://fonts.gstatic.com/s/lobster/v12/cycBf3mfbGkh66G5NhszPQ.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
 html, body {
@@ -164,6 +162,22 @@ dd {
     display: block;
     line-height: 1.5em;
     margin: 0 0 1.5em;
+}
+
+footer {
+    font-size: 12px;
+    line-height: 50px;
+    margin: 0 auto;
+    max-width: 1024px;
+}
+
+footer a {
+    color: #666;
+    margin-right: 1ex;
+    text-decoration: none;
+}
+footer a:hover {
+    text-decoration: underline;
 }
 
 
