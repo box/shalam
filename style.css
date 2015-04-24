@@ -47,12 +47,17 @@ body {
     z-index: 4;
 }
 .box-stalker .logo {
-    background: url(box_black.png);
     color: transparent;
     display: inline-block;
     height: 25px;
     vertical-align: middle;
     width: 48px;
+
+    -shalam-sprite: "box_black.png" dest-size(48px 25px);
+    /* shalam! */;
+    background: url(sprite.compat.png) 0 -600px;
+    background: url(sprite.png) 0 -604px/800px 637px;
+    /* end shalam */
 }
 
 .box-stalker .back-to-top {
@@ -76,7 +81,6 @@ header {
     z-index: 5;
 }
 header:before {
-    background: url('shalam.png') no-repeat right top;
     content: "";
     display: block;
     height: 600px;
@@ -84,6 +88,12 @@ header:before {
     right: 0;
     top: 0;
     width: 800px;
+
+    -shalam-sprite: "shalam.png" dest-size(800px 600px);
+    /* shalam! */;
+    background: url(sprite.compat.png) 0 0;
+    background: url(sprite.png) 0 0/800px 637px;
+    /* end shalam */
 }
 header > * {
     position: relative;
@@ -113,8 +123,13 @@ header .box-stalker {
     position: absolute;
 }
 header .box-stalker .logo {
-    background: url(box.png);
     z-index: 6;
+
+    -shalam-sprite: "box.png" dest-size(48px 25px);
+    /* shalam! */;
+    background: url(sprite.compat.png) -48px -600px;
+    background: url(sprite.png) -52px -604px/800px 637px;
+    /* end shalam */
 }
 
 .npm {
@@ -242,7 +257,7 @@ pre tt {
 
 .highlight .pl-e,
 .highlight .e {
-    color: ##795da3;
+    color: #795da3;
 }
 
 .highlight .pl-k,
