@@ -140,6 +140,11 @@ More advanced features are documented on the wiki:
 Need to contact us directly? Email oss@box.com and be sure to include the name of this project in the subject.
 
 
+## Hacking on Shalam
+
+If you're interested in contributing, please read our wiki page about [hacking on Shalam](https://github.com/box/shalam/wiki/Hacking-on-Shalam) to get started.
+
+
 ## Copyright and License
 
 Copyright 2015 Box, Inc. All rights reserved.
