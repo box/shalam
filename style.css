@@ -81,12 +81,12 @@ header {
     z-index: 5;
 }
 header:before {
+    bottom: 0;
     content: "";
     display: block;
     height: 600px;
     position: absolute;
     right: 0;
-    top: 0;
     width: 800px;
 
     -shalam-sprite: "shalam.png" dest-size(800px 600px);
@@ -103,8 +103,10 @@ header > * {
 @media only screen and (max-width: 850px) {
     header:before {
         background-position: left top;
-        left: 0;
-        right: auto;
+        left: -200px;
+        margin: auto;
+        opacity: 0.2;
+        right: -200px;
     }
 }
 
