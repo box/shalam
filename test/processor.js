@@ -72,6 +72,18 @@ describe('Processor', function() {
             });
         });
 
+        it('should find sprite declarations in a CSS file with importance', function() {
+            var proc = {
+                parsed: crass.parse('x y z{-shalam-sprite: "foo/bar" !important;}'),
+                foundSprites: [],
+                rulesets: [],
+            };
+
+            Processor.prototype.search.call(proc);
+
+            assert.ok(proc.rulesets[0].declaration.important);
+        });
+
         it('should ignore non-shalam declarations', function() {
             var proc = {
                 parsed: crass.parse('x y z{foo: bar}'),
@@ -366,6 +378,16 @@ describe('newDeclaration()', function() {
                 [[null, Processor.newDimension(123)]]
             ).toString(),
             'foo:123px'
+        );
+    });
+    it('should return a Crass Declaration object with importance', function() {
+        assert.equal(
+            Processor.newDeclaration(
+                'foo',
+                [[null, Processor.newDimension(123)]],
+                true
+            ).toString(),
+            'foo:123px!important'
         );
     });
 
