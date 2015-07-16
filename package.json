@@ -1,6 +1,6 @@
 {
   "name": "shalam",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tool for friendly CSS spriting",
   "bin": {
     "shalam": "./bin/shalam"
