@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 
 var argv = require('minimist')(process.argv.slice(2));
+var semver = require('semver');
 
 var main = require('../lib/main');
 var git = require('../lib/git');
@@ -16,6 +17,17 @@ function help() {
     console.log('Shalam Usage:');
     console.log('    shalam path/to/css path/to/images destination/path/for/sprite.png');
 }
+
+/**
+ * Returns the current version of Shalam
+ * @return {string} Current version of Shalam as a string
+ */
+function getCurrentVersion() {
+    var packageJSON = fs.readFileSync('../package.json').toString();
+    var parsed = JSON.parse(packageJSON);
+    return parsed.version;
+}
+
 
 /**
  * Parses the instructions found within the provided package.json file.
@@ -31,6 +43,17 @@ function runPackageJSON(packageJSONPath, instructionName) {
     if (!('shalam' in contentsParsed) || !contentsParsed.shalam.length) {
         console.warn('No shalam instructions found in package.json!');
         return;
+    }
+
+    if ('shalamVersion' in contentsParsed) {
+        var shalamVersion = contentsParsed.shalamVersion;
+        var currentVersion = getCurrentVersion();
+        if (!semver.satisfies(currentVersion, shalamVersion)) {
+            console.error('The package.json file specifies a Shalam version that your installation does not meet.');
+            console.error(currentVersion ' does not satisfy ' + shalamVersion);
+            process.exit(1);
+            return;
+        }
     }
 
     processJSONRules(contentsParsed.shalam, path.dirname(packageJSONPath), instructionName);
