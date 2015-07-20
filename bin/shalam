@@ -50,7 +50,7 @@ function runPackageJSON(packageJSONPath, instructionName) {
         var currentVersion = getCurrentVersion();
         if (!semver.satisfies(currentVersion, shalamVersion)) {
             console.error('The package.json file specifies a Shalam version that your installation does not meet.');
-            console.error(currentVersion ' does not satisfy ' + shalamVersion);
+            console.error(currentVersion + ' does not satisfy ' + shalamVersion);
             process.exit(1);
             return;
         }
