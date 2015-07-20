@@ -25,11 +25,13 @@ function help() {
  * @return {string} Current version of Shalam as a string
  */
 function getCurrentVersion(cb) {
-    exec('npm info shalam version', function (error, stdout, stderr) {
+    exec('npm info shalam version', function(err, stdout, stderr) {
+        var error = err || stderr;
         if (error) {
-            console.log('exec error: ' + error);
-        } else if (stderr) {
-            console.log('stderr: ' + stderr);
+            console.error('Encountered error detecting Shalam version:');
+            console.error(error);
+            process.exit(1);
+            return;
         } else {
             cb(stdout);
         }
