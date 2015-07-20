@@ -23,7 +23,7 @@ function help() {
  * @return {string} Current version of Shalam as a string
  */
 function getCurrentVersion() {
-    var packageJSON = fs.readFileSync('../package.json').toString();
+    var packageJSON = fs.readFileSync('package.json').toString();
     var parsed = JSON.parse(packageJSON);
     return parsed.version;
 }
