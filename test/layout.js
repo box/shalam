@@ -226,9 +226,9 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayoutCompat(images);
-            assert.equal(images[0].imageResource, computedLayout.mapping.first.imageResource);
-            assert.equal(images[1].imageResource, computedLayout.mapping.second.imageResource);
-            assert.equal(images[2].imageResource, computedLayout.mapping.third.imageResource);
+            assert.equal(images[0].imageResource, computedLayout.mapping['first10x300'].imageResource);
+            assert.equal(images[1].imageResource, computedLayout.mapping['second200x260'].imageResource);
+            assert.equal(images[2].imageResource, computedLayout.mapping['third10x10'].imageResource);
 
         });
 
@@ -341,7 +341,8 @@ describe('Layout', function() {
             resolve: function() {}
         };
         var image = {
-            fetch: function() {}
+            fetch: function() {},
+            getSizeHash: function() {},
         };
 
         function fakeProcessor(images) {
