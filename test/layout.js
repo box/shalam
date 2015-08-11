@@ -464,6 +464,46 @@ describe('Layout', function() {
             assert.equal(result[0].warnings.length, 1, 'There should be one warning');
         });
 
+        it('should output a single image with the max resolution when duplicate sprite is defined', function() {
+
+            var procs = [
+                {
+                    foundSprites: ['img/foo.png'],
+                    rulesets: [
+                        {spriteData: {destWidth: 20, destHeight: 20}},
+                    ],
+                },
+                {
+                    foundSprites: ['img/foo.png'],
+                    rulesets: [
+                        {spriteData: {destWidth: 160, destHeight: 160}},
+                    ],
+                },
+                {
+                    foundSprites: ['img/foo.png'],
+                    rulesets: [
+                        {spriteData: {destWidth: 40, destHeight: 40}},
+                    ],
+                },
+                {
+                    foundSprites: ['img/foo.png'],
+                    rulesets: [
+                        {spriteData: {destWidth: 320, destHeight: 320}},
+                    ],
+                },
+            ];
+
+            var pathMock = sandbox.mock(path);
+            pathMock.expects('resolve').withArgs('source', 'img/foo.png').once().returns('rimage1');
+
+            var imgMock = sandbox.mock(image);
+            imgMock.expects('fetch').withArgs('rimage1').once().returns({height: 640, width: 640});
+
+            result = layout.getImageDirectory(procs, 'source');
+
+            assert.ok(result.length === 1, 'There should be a single sprite image');
+        });
+
     });
 
 });
