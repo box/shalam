@@ -15,6 +15,7 @@ describe('Layout', function() {
             ],
             maxSize: {width: width, height: height},
             minSpritedSize: {width: width, height: height},
+            warnings: [],
         };
     }
 
@@ -45,19 +46,19 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.width, 256);
+            assert.equal(computedLayout.width, 512);
 
         });
 
         it('should make the layout width equal to the widest element if it exceeds 256px', function() {
             var images = [
-                fakeImage(300, 10, 'first'),
+                fakeImage(700, 10, 'first'),
                 fakeImage(260, 200, 'second'),
                 fakeImage(10, 10, 'third'),
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.width, 300);
+            assert.equal(computedLayout.width, 700);
 
         });
 
@@ -86,7 +87,7 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.height, 22);
+            assert.equal(computedLayout.height, 10);
 
         });
 
@@ -95,27 +96,27 @@ describe('Layout', function() {
             // Since these images exceed the width of the widest element, so
             // it should wrap at each line.
             var images = [
-                fakeImage(300, 10, 'first'),
+                fakeImage(700, 10, 'first'),
                 fakeImage(250, 10, 'second'),
                 fakeImage(200, 10, 'third'),
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.width, 300);
-            assert.equal(computedLayout.height, 42);
+            assert.equal(computedLayout.width, 700);
+            assert.equal(computedLayout.height, 26);
 
         });
 
         it('should allow images to line up on a single line', function() {
             var images = [
-                fakeImage(300, 10, 'first'),
+                fakeImage(700, 10, 'first'),
                 fakeImage(250, 10, 'second'),
                 fakeImage(50, 10, 'third'),
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.width, 300);
-            assert.equal(computedLayout.height, 42);
+            assert.equal(computedLayout.width, 700);
+            assert.equal(computedLayout.height, 26);
 
         });
 
@@ -129,6 +130,7 @@ describe('Layout', function() {
                     ],
                     maxSize: {width: 15, height: 15},
                     minSpritedSize: {width: 12.345, height: 12.345},
+                    warnings: [],
                 },
                 {
                     imageResource: {id: 'normalSize'},
@@ -138,11 +140,12 @@ describe('Layout', function() {
                     ],
                     maxSize: {width: 15, height: 15},
                     minSpritedSize: {width: 15, height: 15},
+                    warnings: [],
                 },
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.images[1].x, 17);
+            assert.equal(computedLayout.images[1].x, 16);
 
         });
 
@@ -156,6 +159,7 @@ describe('Layout', function() {
                     ],
                     maxSize: {width: 15, height: 15},
                     minSpritedSize: {width: 1200, height: 12.345},
+                    warnings: [],
                 },
                 {
                     imageResource: {id: 'normalSize'},
@@ -165,11 +169,46 @@ describe('Layout', function() {
                     ],
                     maxSize: {width: 15, height: 15},
                     minSpritedSize: {width: 15, height: 15},
+                    warnings: [],
                 },
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.images[1].y, 17);
+            assert.equal(computedLayout.images[1].y, 16);
+
+        });
+
+        it('should be fine with nicely scaled images', function() {
+            var img = fakeImage(128, 128, 'first')
+            img.usedSizes.push({height: 64, width: 64});
+            img.usedSizes.push({height: 32, width: 32});
+            img.usedSizes.push({height: 16, width: 16});
+            var images = [
+                fakeImage(256, 256, 'ignore me'),
+                img,
+            ];
+
+            var computedLayout = layout.performLayout(images);
+            assert.equal(computedLayout.width, 512);
+            assert.equal(computedLayout.height, 256);
+            assert.equal(img.warnings.length, 0);
+
+        });
+
+        it('should warn when images are used at a weird size', function() {
+            var img = fakeImage(128, 128, 'first')
+            img.usedSizes.push({height: 64, width: 64});
+            img.usedSizes.push({height: 13, width: 13});
+            img.usedSizes.push({height: 16, width: 16});
+            var images = [
+                fakeImage(256, 256, 'ignore me'),
+                img,
+            ];
+
+            var computedLayout = layout.performLayout(images);
+            assert.equal(computedLayout.width, 512);
+            assert.equal(computedLayout.height, 256);
+            assert.equal(img.warnings.length, 1);
 
         });
 
@@ -202,19 +241,19 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayoutCompat(images);
-            assert.equal(computedLayout.width, 256);
+            assert.equal(computedLayout.width, 512);
 
         });
 
         it('should make the layout width equal to the widest element if it exceeds 256px', function() {
             var images = [
-                fakeImage(300, 10, 'first'),
+                fakeImage(700, 10, 'first'),
                 fakeImage(260, 200, 'second'),
                 fakeImage(10, 10, 'third'),
             ];
 
             var computedLayout = layout.performLayoutCompat(images);
-            assert.equal(computedLayout.width, 300);
+            assert.equal(computedLayout.width, 700);
 
         });
 
@@ -252,26 +291,26 @@ describe('Layout', function() {
             // Since these images exceed the width of the widest element, so
             // it should wrap at each line.
             var images = [
-                fakeImage(300, 10, 'first'),
+                fakeImage(700, 10, 'first'),
                 fakeImage(250, 10, 'second'),
                 fakeImage(200, 10, 'third'),
             ];
 
             var computedLayout = layout.performLayoutCompat(images);
-            assert.equal(computedLayout.width, 300);
-            assert.equal(computedLayout.height, 30);
+            assert.equal(computedLayout.width, 700);
+            assert.equal(computedLayout.height, 20);
 
         });
 
         it('should allow images to line up on a single line', function() {
             var images = [
-                fakeImage(300, 10, 'first'),
+                fakeImage(700, 10, 'first'),
                 fakeImage(250, 10, 'second'),
                 fakeImage(50, 10, 'third'),
             ];
 
             var computedLayout = layout.performLayoutCompat(images);
-            assert.equal(computedLayout.width, 300);
+            assert.equal(computedLayout.width, 700);
             assert.equal(computedLayout.height, 20);
 
         });
