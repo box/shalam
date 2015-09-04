@@ -1,6 +1,7 @@
 # Shalam
 
 [![Project Status](http://opensource.box.com/badges/active.svg)](http://opensource.box.com/badges)
+[![Build Status](https://travis-ci.org/box/shalam.svg)](https://travis-ci.org/box/shalam)
 
 A friendly tool for CSS spriting. Shalam allows you to add Retina-friendly,
 high-quality image sprites to your website without modifying any markup.
