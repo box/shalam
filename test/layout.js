@@ -40,17 +40,17 @@ describe('Layout', function() {
 
         });
 
-        it('should make the layout a minumum of 256px wide', function() {
+        it('should make the layout a minumum of 514px wide', function() {
             var images = [
                 fakeImage(10, 10, 'first'),
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.width, 512);
+            assert.equal(computedLayout.width, 514);
 
         });
 
-        it('should make the layout width equal to the widest element if it exceeds 256px', function() {
+        it('should make the layout width equal to the widest element if it exceeds 512px', function() {
             var images = [
                 fakeImage(700, 10, 'first'),
                 fakeImage(260, 200, 'second'),
@@ -189,7 +189,7 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.width, 512);
+            assert.equal(computedLayout.width, 514);
             assert.equal(computedLayout.height, 256);
             assert.equal(img.warnings.length, 0);
 
@@ -206,7 +206,7 @@ describe('Layout', function() {
             ];
 
             var computedLayout = layout.performLayout(images);
-            assert.equal(computedLayout.width, 512);
+            assert.equal(computedLayout.width, 514);
             assert.equal(computedLayout.height, 256);
             assert.equal(img.warnings.length, 1);
 
@@ -235,13 +235,13 @@ describe('Layout', function() {
 
         });
 
-        it('should make the layout a minumum of 256px wide', function() {
+        it('should make the layout a minumum of 514px wide', function() {
             var images = [
                 fakeImage(10, 10, 'first'),
             ];
 
             var computedLayout = layout.performLayoutCompat(images);
-            assert.equal(computedLayout.width, 512);
+            assert.equal(computedLayout.width, 514);
 
         });
 
