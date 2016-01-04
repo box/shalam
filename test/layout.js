@@ -103,7 +103,7 @@ describe('Layout', function() {
 
             var computedLayout = layout.performLayout(images);
             assert.equal(computedLayout.width, 700);
-            assert.equal(computedLayout.height, 26);
+            assert.equal(computedLayout.height, 24);
 
         });
 
@@ -116,7 +116,7 @@ describe('Layout', function() {
 
             var computedLayout = layout.performLayout(images);
             assert.equal(computedLayout.width, 700);
-            assert.equal(computedLayout.height, 26);
+            assert.equal(computedLayout.height, 24);
 
         });
 
