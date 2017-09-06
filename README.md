@@ -1,7 +1,12 @@
-# Shalam
+# Shalam - Deprecated
 
-[![Project Status](http://opensource.box.com/badges/active.svg)](http://opensource.box.com/badges)
-[![Build Status](https://travis-ci.org/box/shalam.svg)](https://travis-ci.org/box/shalam)
+[![Project Status](http://opensource.box.com/badges/eol.svg)](http://opensource.box.com/badges)
+
+Shalam has been EOL'd and is no longer being maintained. It is kept here for reference only and will not be updated.
+
+We have modernized our stack to use inline SVGs instead of sprited images.
+
+## About
 
 A friendly tool for CSS spriting. Shalam allows you to add Retina-friendly,
 high-quality image sprites to your website without modifying any markup.
